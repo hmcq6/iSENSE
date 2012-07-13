@@ -41,10 +41,15 @@ $top = <<<EndOfHTML
             $('#dry_run').click(function (){
                 eids = $('#exp_ids').val();
                 eid = eids.split(' ');
-                redirrect = window.location.href + '?eids=';
+                
+                if(window.location.href.indexOf("?")) {
+                    redirrect = window.location.href + 'eids=';
+                } else { 
+                    redirrect = window.location.href + '?eids=';
+                }
 
                 for( tmp in eid ) {
-                    if(tmp != eid.length) {
+                    if(tmp != eid.length -1) {
                         if(eid[tmp] != ' ' && eid[tmp] != ''){
                             redirrect += eid[tmp] + '+';
                         }
@@ -53,12 +58,44 @@ $top = <<<EndOfHTML
                     }
                 }
                 
-                window.location.href = redirrect;
-                
+                window.location.href = redirrect; 
+            });
+            
+            $('#exp_ids').keypress(function(event){                
+                if(event.keyCode==13) {
+                    
+                    event.preventDefault();
+                    
+                    eids = $('#exp_ids').val();
+                    eid = eids.split(' ');
+
+                    if(window.location.href.indexOf("?") > 0) {
+                        redirrect = window.location.href + 'eids=';
+                    } else { 
+                        redirrect = window.location.href + '?eids=';
+                    }
+
+                    for( tmp in eid ) {
+                        if(tmp != eid.length -1) {
+                            if(eid[tmp] != ' ' && eid[tmp] != ''){
+                                redirrect += eid[tmp] + '+';
+                            }
+                        } else { 
+                            redirrect += eid[tmp];
+                        }
+                    }
+
+                    window.location.href = redirrect;
+                    
+                }
             });
             
             $('#run_all').click(function(){
-                window.location.href = window.location.href + '?eids=all&verify=yes';
+                if(window.location.href.indexOf("?")) {
+                    window.location.href = window.location.href + 'eids=all&verify=yes';
+                } else {
+                    window.location.href = window.location.href + '?eids=all&verify=yes';
+                }
             });
         });    
             
@@ -69,7 +106,7 @@ EndOfHTML;
 
 echo $top;
 
-if ($tmpusr['administrator']) {
+if ($tmpusr['administrator'] == 1) {
     if (isset($_REQUEST['eids'])) {        
         
         if (isset($_REQUEST['verify']) && $_REQUEST['verify'] == 'yes') {
@@ -145,7 +182,7 @@ if ($tmpusr['administrator']) {
                 echo "</pre>";
             }
 
-            echo "<a href='timeFix.php?eids=";
+            echo "<h2>Dry Run</h2><br/><a href='timeFix.php?eids=";
             foreach($eids as $index => $e) {
                 if( $index != sizeof($eids)-1)
                     echo $e . "+";
@@ -183,14 +220,11 @@ if ($tmpusr['administrator']) {
                                 ret.push('Replacing ' + obj[\"" . $field['field_name'] . "\"] + ' with ' + replacement + '\\r\\n');                                                                
                                 });
                                  return ret;}";
-                                 
-                        $returnVal = $mdb->db->execute($func);
-                        
-                        echo "<pre><table>";
-                        foreach($returnVal['retval'] as $val) {
-                            echo "<tr><td>" . $val . "</td></tr>";
-                        }
-                        echo "</table></pre>";
+                                        
+                        echo '<h2>Exp #' . $eid . '</h2><hr><br/>';             
+                        echo "<pre>";
+                            print_r($mdb->db->execute($func));
+                        echo "</pre>";
                     }
                 }
             }
@@ -200,6 +234,5 @@ if ($tmpusr['administrator']) {
         echo '<input id="dry_run" type="button" value="Dry run"><br/><br/><h2>Update all:</h2><br/><input id="run_all" type="button" value="Run All"></form>';
     }
 } else {
-    echo 'Silly non-Admin what are you doing here?';
-}
+header('location:/404page');}
 ?>
