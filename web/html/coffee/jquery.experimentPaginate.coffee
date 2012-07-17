@@ -48,14 +48,8 @@ $.fn.experimentPaginate = ( options = null ) ->
     #Define page_controls
     page_controls = """
                     <div id='page_controls'>
-                        <div id='page_back'>
-                            <input type="button" class='page_button' value="Back" />
-                        </div>
                         <div id='page_info'>
                             <p>Displaying Session ##{settings.start} to Session ##{end}</p>
-                        </div>
-                        <div id='page_forward'>
-                            <input type="button" class='page_button' value="Next" />
                         </div>
                     </div>
                     """
@@ -69,28 +63,13 @@ $.fn.experimentPaginate = ( options = null ) ->
         
         #Append page controls
         $(target).parent().append(page_controls)
-        
-        #En/Disable Back button
-        if settings.start - settings.limit >= 0
-            $('#page_back input').click () ->
-                $('#session_list').experimentPaginate({ start : (settings.start - settings.limit), limit : settings.limit});
-            $('#page_back input').mouseover () ->
-                $('#page_back input').css { 'background-color' : '#DDD', 'border-color' : '#CCC' }
-            $('#page_back input').mouseout () ->
-                $('#page_back input').css { 'background-color' : '#EEE', 'border-color' : '#DDD' }
-        else
-            $('#page_back input').addClass 'page_disabled'
             
-        #En/Disable Next button
-        if (settings.start + settings.limit) < $('#session_list').children().length
-            $('#page_forward input').click () ->
-                $('#session_list').experimentPaginate({ start : (settings.start + settings.limit), limit : settings.limit});
-            $('#page_forward input').mouseover () ->
-                $('#page_forward input').css { 'background-color' : '#DDD', 'border-color' : '#CCC' }
-            $('#page_forward input').mouseout () ->
-                $('#page_forward input').css { 'background-color' : '#EEE', 'border-color' : '#DDD' }
-        else
-            $('#page_forward input').addClass 'page_disabled'
+        #Enable Infinite Scrollllllllllll
+        ($ window).scroll () ->
+            if( ( ( ($ window).scrollTop() + ($ window).innerHeight() ) > ($ '#page_info').offset().top ) == true )
+                ($ window).unbind()
+                $('#session_list').experimentPaginate({ start : settings.start, limit : settings.limit + 20});
+            
         
         #Hide divs
         $(target).children().each (index) ->
