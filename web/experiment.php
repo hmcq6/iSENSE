@@ -67,7 +67,7 @@ if(isset($_GET['id'])) {
     		$videos 	= getVideosForExperiment($id);
     		$images 	= getImagesForExperiment($id);
     		$collabs 	= getExperimentCollaborators($ownerid, $id);
-    		$sessions 	= getSessionsForExperiment($id);
+    		$sessions 	= getSessionsForExperiment($id, 20);
 		}
 		
 		

@@ -167,7 +167,7 @@ function addFieldToSession($token, $sid, $name, $type_id, $unit_id = 1) {
 	return false;
 }
 
-function getSessionsForExperiment($eid) {
+function getSessionsForExperiment($eid, $limit) {
 	global $db;
 		
 	$sql = "SELECT 	sessions.session_id, 
@@ -192,6 +192,11 @@ function getSessionsForExperiment($eid) {
                     AND sessions.finalized = 1
                     AND users.user_id = sessions.owner_id
                     ORDER BY sessions.timecreated DESC";	
+                    
+    if($limit != null) {
+        $sql .= " LIMIT 0, $limit";
+    }
+    
 	$result = $db->query($sql);
 	
 	//Filter private last names

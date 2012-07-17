@@ -142,7 +142,15 @@ if(isset($_REQUEST['method'])) {
 			if(isset($_REQUEST['experiment'])) {
 
 				$id = safeString($_REQUEST['experiment']);
-				$dataset = getSessionsForExperiment($id);
+				$tmp = getSessionsForExperiment($id);
+
+				if( isset($_REQUEST['start']) && isset($_REQUEST['end']) ) {
+				    for( $x = $_REQUEST['start']; $x < $_REQUEST['end']; $x++ ) {
+				        $dataset[$x] = $tmp[$x];
+				    }
+				} else {
+				    $dataset = $tmp;
+				}
 
 				if($dataset) {
 					$data = $dataset;

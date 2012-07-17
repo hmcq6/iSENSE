@@ -34,16 +34,16 @@ $.fn.experimentPaginate = ( options = null ) ->
     #Default settings
     settings =
         start : 0
-        limit : 20
+        end : 20
         
     #Overwrite if options aren't empty
     settings = $.extend settings, options
     
     #Calculate end number for page_info
-    if (settings.start + settings.limit) > $('#session_list').children().length
+    if (settings.start + settings.end) > $('#session_list').children().length
         end = $('#session_list').children().length
     else
-        end = settings.start + settings.limit
+        end = settings.start + settings.end
         
     #Define page_controls
     page_controls = """
@@ -67,14 +67,22 @@ $.fn.experimentPaginate = ( options = null ) ->
         #Enable Infinite Scrollllllllllll
         ($ window).scroll () ->
             if( ( ( ($ window).scrollTop() + ($ window).innerHeight() ) > ($ '#page_info').offset().top ) == true )
+                $.ajax({
+                    url : "/ws/api.php",
+                    type: "POST",
+                    data: {method : 'getSessions', experiment: 38, start : settings.start, end : settings.end},
+                    success: (data) ->
+                        console.log data
+                        #($ '#session_list').append data
+                })
                 ($ window).unbind()
-                $('#session_list').experimentPaginate({ start : settings.start, limit : settings.limit + 20});
+                $('#session_list').experimentPaginate({ start : settings.start, end : settings.end + 20});
             
         
         #Hide divs
         $(target).children().each (index) ->
             $(this).hide()
-            if index >= settings.start and index < ( settings.start + settings.limit )
+            if index >= settings.start and index < ( settings.start + settings.end )
                 $(this).show()
             
         #Call "Main()" on each .exp..ate() target

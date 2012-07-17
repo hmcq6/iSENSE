@@ -34,13 +34,13 @@ $.fn.experimentPaginate = function(options) {
   if (options == null) options = null;
   settings = {
     start: 0,
-    limit: 20
+    end: 20
   };
   settings = $.extend(settings, options);
-  if ((settings.start + settings.limit) > $('#session_list').children().length) {
+  if ((settings.start + settings.end) > $('#session_list').children().length) {
     end = $('#session_list').children().length;
   } else {
-    end = settings.start + settings.limit;
+    end = settings.start + settings.end;
   }
   page_controls = "<div id='page_controls'>\n    <div id='page_info'>\n        <p>Displaying Session #" + settings.start + " to Session #" + end + "</p>\n    </div>\n</div>";
   update = function(target, settings) {
@@ -48,16 +48,29 @@ $.fn.experimentPaginate = function(options) {
     $(target).parent().append(page_controls);
     ($(window)).scroll(function() {
       if (((($(window)).scrollTop() + ($(window)).innerHeight()) > ($('#page_info')).offset().top) === true) {
+        $.ajax({
+          url: "./ws/api.php",
+          type: "POST",
+          data: {
+            method: 'getSessions',
+            experiment: 38,
+            start: settings.start,
+            end: settings.end
+          },
+          success: function(data) {
+            return console.log(data);
+          }
+        });
         ($(window)).unbind();
         return $('#session_list').experimentPaginate({
           start: settings.start,
-          limit: settings.limit + 20
+          end: settings.end + 20
         });
       }
     });
     return $(target).children().each(function(index) {
       $(this).hide();
-      if (index >= settings.start && index < (settings.start + settings.limit)) {
+      if (index >= settings.start && index < (settings.start + settings.end)) {
         return $(this).show();
       }
     });
