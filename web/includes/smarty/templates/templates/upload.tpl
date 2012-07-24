@@ -89,26 +89,43 @@
 					</div>
 					<div id="type_manual" style="width:480px">
 						<table width="480px" cellpadding="3" id="manual_table">
-							<tr>
-								{ foreach from=$fields item=field }
-									<td>{ $field.field_name } ({$field.unit_abbreviation})</td>
-								{ /foreach }
-							</tr>
-							<tr id="template" style="display:none;">
-								{ foreach from=$fields item=field }
-									<td><input type="text" onKeyPress="return event.keyCode!=13" id="{ $field.field_name|replace:' ':'_' }_xxx" name="{ $field.field_name|replace:' ':'_'  }_xxx"  style="width:90%;"></td>
-								{ /foreach }
-							</tr>
-							<tr>
-								{ foreach from=$fields item=field }
-								    { if $field.field_name == 'Time' }
-								      	 <td><input type="text" onKeyPress="return event.keyCode!=13" id="{ $field.field_name|replace:' ':'_' }_1" name="{ $field.field_name|replace:' ':'_' }_1" style="width:90%;" class="time"></td>
-								    { else }
-									<td><input type="text" onKeyPress="return event.keyCode!=13" id="{ $field.field_name|replace:' ':'_' }_1" name="{ $field.field_name|replace:' ':'_' }_1" style="width:90%;" ></td>
-								    { /if }
-								{ /foreach }
-							</tr>
+						    <thead>
+							    <tr>
+    								{ foreach from=$fields item=field }
+    									<td  data-type_id="{$field.type_id}">{ $field.field_name } ({$field.unit_abbreviation})</td>
+    								{ /foreach }
+    							</tr>
+							</thead>
+							<tbody>
+							    <tr id="template" style="display:none;">
+    								{ foreach from=$fields item=field }
+    									<td><input type="text" onKeyPress="return event.keyCode!=13" id="{ $field.field_name|replace:' ':'_' }_xxx" name="{ $field.field_name|replace:' ':'_'  }_xxx"  style="width:90%;"></td>
+    								{ /foreach }
+    							</tr>
+    							<tr>
+    								{ foreach from=$fields item=field }
+    								    { if $field.field_name == 'Time' }
+    								      	 <td><input type="text" onKeyPress="return event.keyCode!=13" id="{ $field.field_name|replace:' ':'_' }_1" name="{ $field.field_name|replace:' ':'_' }_1" style="width:90%;" class="time"></td>
+    								    { else }
+    									<td><input type="text" onKeyPress="return event.keyCode!=13" id="{ $field.field_name|replace:' ':'_' }_1" name="{ $field.field_name|replace:' ':'_' }_1" style="width:90%;" ></td>
+    								    { /if }
+    								{ /foreach }
+    							</tr>
+							</tbody>
 						</table>
+						<div id="messages">
+						    <div id="errors">
+    					        <div style="display:none">Blank Rows:
+    					            <span id="blank_rows"></span>
+    					        </div>
+    					        <div style="display:none">Mismatched Rows:
+    					            <span id="mismatch_rows"></span>
+    					        </div>
+    						</div>
+    						<div id="verification" style="display:none">
+    						    Ok
+    						</div>
+    					</div>
 						<input type="hidden" id="row_count" name="row_count" value="1" />
 						<span>
 						    <button type="button" id="addManualRowButton">Add Row</button>
@@ -255,7 +272,7 @@
 					<legend>Review and Finish</legend>
 				    <p>Your session will be created with the information entered above.</p>
 					<input type="hidden" name="id" value="{ $meta.experiment_id }" />
-					<button type="submit" name="session_create">
+					<button type="submit" id="ses_create" name="session_create">
 						{ if $state == 1 }Create Session{ /if }
 						{ if $state == 2 or $state == 3 or $state == 4 }Complete Session{ /if }
 					</button>

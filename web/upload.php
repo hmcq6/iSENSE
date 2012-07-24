@@ -787,8 +787,8 @@ $smarty->assign('hideName', $req_name);
 $smarty->assign('hideProcedure', $req_procedure);
 $smarty->assign('hideLocation', $req_loc);
 
-$smarty->assign('head', '<script src="/html/js/lib/jquery.validate.js"></script>' . 
-						'<script src="/html/js/lib/validate.js"></script>'.
+$smarty->assign('head', //'<script src="/html/js/lib/jquery.validate.js"></script>' . 
+						'<script src="/html/js/upload.js"></script>'.
 						'<script src="/html/js/lib/MillisecondClock.js"></script>');
 
 // Assign values required for all views
