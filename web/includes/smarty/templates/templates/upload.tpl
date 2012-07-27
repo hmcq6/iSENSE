@@ -49,23 +49,23 @@
 			    	
 				{ if $hideName }
 				<label for="session_name">* Name:</label>
-				<input type="text" name="session_name" id="session_name" class="required urlSafe" value="{ $session_name }" onKeyPress="return event.keyCode!=13"/>
-				<img height="10px" width="10px" id="session_name_validated" src="/html/img/validated.png" class="validated" style="position:relative;left:-15px;" />
-				<img height="10px" width="10px" id="session_name_failed" src="/html/img/failed.png" class="failed" style="position:relative;left:-15px;" /><br/>
+				<input type="text" name="session_name" id="session_name" class="required_header urlSafe" value="{ $session_name }" onKeyPress="return event.keyCode!=13"/>
+				<!-- ><img height="10px" width="10px" id="session_name_validated" src="/html/img/validated.png" class="validated" style="position:relative;left:-15px;" />
+				<img height="10px" width="10px" id="session_name_failed" src="/html/img/failed.png" class="failed" style="position:relative;left:-15px;" /><br/> -->
 			    	<span id="session_name_hint" class="hint">Example: "My Super Awesome Test"</span><br/>
 			    	
 			    	{/if}{ if $hideProcedure }
 			    	<label for="session_description">* Procedure:</label>
-			    	<textarea name="session_description" id="session_description" class="required">{ $session_description }</textarea>
-			    	<img height="10px" width="10px" id="session_description_validated" src="/html/img/validated.png" class="validated" style="position:relative;left:-15px;top:-15px;" />
-			    	<img height="10px" width="10px" id="session_description_failed" src="/html/img/failed.png" class="failed" style="position:relative;left:-15px;top:-15px;" /><br/>
+			    	<textarea name="session_description" id="session_description" class="required_header">{ $session_description }</textarea>
+			    	<!-- ><img height="10px" width="10px" id="session_description_validated" src="/html/img/validated.png" class="validated" style="position:relative;left:-15px;top:-15px;" />
+			    	<img height="10px" width="10px" id="session_description_failed" src="/html/img/failed.png" class="failed" style="position:relative;left:-15px;top:-15px;" /><br/> -->
 			    	<span id="session_description_hint" class="hint">Describe the session procedure and other details.</span><br/>
 			    	
 				{/if}{ if $hideLocation }
 				<label for="session_citystate">* Location:</label>
-				<input type="text" name="session_citystate" id="session_citystate" value="{ $session_citystate }" class="required" onKeyPress="return event.keyCode!=13"/>
-				<img height="10px" width="10px" id="session_citystate_validated" src="/html/img/validated.png" class="validated" style="position:relative;left:-15px;" />
-				<img height="10px" width="10px" id="session_citystate_failed" src="/html/img/failed.png" class="failed" style="position:relative;left:-15px;" /><br/>
+				<input type="text" name="session_citystate" id="session_citystate" value="{ $session_citystate }" class="required_header" onKeyPress="return event.keyCode!=13"/>
+				<!-- ><img height="10px" width="10px" id="session_citystate_validated" src="/html/img/validated.png" class="validated" style="position:relative;left:-15px;" />
+				<img height="10px" width="10px" id="session_citystate_failed" src="/html/img/failed.png" class="failed" style="position:relative;left:-15px;" /><br/> -->
 				<span id="session_citystate_hint" class="hint">Example: "4 Yawkey Way, Boston, MA" or "Boston, Ma" </span><br/>
 				
                         {/if}
@@ -88,7 +88,7 @@
 						<span class="hint">Click browse and select your CSV data file.</span><br/>
 					</div>
 					<div id="type_manual" style="width:480px">
-						<table width="480px" cellpadding="3" id="manual_table">
+						<table width="480px" cellpadding="3" id="manual_table" class="required_table">
 						    <thead>
 							    <tr>
     								{ foreach from=$fields item=field }
@@ -115,10 +115,15 @@
 						</table>
 						<div id="messages">
 						    <div id="errors">
-    					        <div style="display:none">Blank Rows:
+						        <div>
+						            <span id="empty_name" style="display:none;color:red">Session Name can not be blank!</span><br />
+						            <span id="empty_description" style="display:none;color:red">Session Description can not be blank!</span><br />
+						            <span id="empty_citystate" style="display:none;color:red">Session Location can not be blank!</span><br />
+						        </div>
+    					        <div style="display:none;color:red;">Blank Rows:
     					            <span id="blank_rows"></span>
     					        </div>
-    					        <div style="display:none">Mismatched Rows:
+    					        <div style="display:none;color:red;">Mismatched Rows:
     					            <span id="mismatch_rows"></span>
     					        </div>
     						</div>
